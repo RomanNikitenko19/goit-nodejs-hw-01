@@ -39,6 +39,7 @@ const removeContact = async (contactId) => {
     const filteredList = JSON.parse(data).filter(({ id }) => id !== String(contactId));
 
     fs.writeFile(contactsPath, JSON.stringify(filteredList));
+    console.table(filteredList);
   } catch (error) {
     console.error(error.message);
   }
@@ -58,6 +59,7 @@ const addContact = async (userName, userEmail, userPhone) => {
       const allContactsAndAddedContact = [...JSON.parse(contacts), newContact];
 
       fs.writeFile(contactsPath, JSON.stringify(allContactsAndAddedContact));
+      console.table(allContactsAndAddedContact);
       return;
     }
 
