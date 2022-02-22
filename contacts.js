@@ -44,32 +44,23 @@ const removeContact = async (contactId) => {
   }
 }
 
-const addContact = async (name, email, phone) => {
+const addContact = async (userName, userEmail, userPhone) => {
   try {
     const contacts = await read(contactsPath);
-    console.log(Array.isArray(JSON.parse(contacts)));
-    console.log(JSON.parse(contacts));
-    const isNotUniqueEmail = JSON.parse(contacts).some((contact, index, array) => {
-      console.log(contact.email);
-      console.log(typeof contact.email);
-      contact.email === email
-    });
+    const isNotUniqueEmail = JSON.parse(contacts).some(({ email }) => email === userEmail);
 
-    console.log(isNotUniqueEmail);//false?????
-    console.log(Boolean(isNotUniqueEmail));
     if (isNotUniqueEmail) {
       console.log("try again and enter correct data");
       return;
     }
-    if (name && email && phone) {
-      // const newContact = { id: nanoid(), name, email, phone };
-      // const allContactsAndAddedContact = [...JSON.parse(contacts), newContact];
+    if (userName && userEmail && userPhone) {
+      const newContact = { id: nanoid(), name: userName, email: userEmail, phone: userPhone };
+      const allContactsAndAddedContact = [...JSON.parse(contacts), newContact];
 
-      // fs.writeFile(contactsPath, JSON.stringify(allContactsAndAddedContact));
-      console.log('ok');
-      return
+      fs.writeFile(contactsPath, JSON.stringify(allContactsAndAddedContact));
+      return;
     }
-    console.log('no');
+
   } catch (error) {
     console.error(error.message);
   }
